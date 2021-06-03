@@ -3,21 +3,37 @@ import {
   createStyles,
   Grid,
   makeStyles,
-  Paper,
   Theme,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grid: {
+      margin: 20,
+    },
+  })
+);
+
 const Greetings = () => {
-  debugger;
+  const classes = useStyles({});
   return (
-    <Paper>
-      <Grid container direction="column">
+    <Grid
+      className={classes.grid}
+      container
+      direction="column"
+      alignItems="center"
+      spacing={8}
+    >
+      <Grid item>
         <TextField variant="outlined" size="small" label="Name"></TextField>
-        <Button>Say Hello</Button>
-        <Button>Say Bye...</Button>
       </Grid>
-    </Paper>
+      <Grid item>
+        <Button variant="contained" color="primary">
+          Say Hello
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
