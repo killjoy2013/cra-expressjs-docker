@@ -4,6 +4,7 @@ import {
   Grid,
   makeStyles,
   Theme,
+  Typography,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { useState } from "react";
@@ -13,12 +14,17 @@ const useStyles = makeStyles((theme: Theme) =>
     grid: {
       margin: 20,
     },
+    message: {
+      margin: 20,
+    },
   })
 );
 
 const Greetings = () => {
   const classes = useStyles({});
   const [name, setName] = useState("");
+  const [helloMessage, setHelloMessage] = useState("");
+
   const handleChange = (event: any) => {
     setName(event.target.value);
   };
@@ -30,7 +36,7 @@ const Greetings = () => {
         return response.json();
       })
       .then((message) => {
-        console.log(message.greeting);
+        setHelloMessage(message.greeting);
       })
       .catch((error) => {
         console.error(error);
@@ -41,7 +47,7 @@ const Greetings = () => {
       className={classes.grid}
       container
       direction="column"
-      alignItems="center"
+      alignItems="flex-start"
       spacing={8}
     >
       <Grid item>
@@ -52,10 +58,11 @@ const Greetings = () => {
           onChange={handleChange}
         ></TextField>
       </Grid>
-      <Grid item>
+      <Grid item container direction="row" alignItems="center">
         <Button variant="contained" color="primary" onClick={handleHello}>
           Say Hello
         </Button>
+        <Typography className={classes.message}>{helloMessage}</Typography>
       </Grid>
     </Grid>
   );
