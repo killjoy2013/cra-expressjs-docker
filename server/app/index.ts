@@ -13,9 +13,14 @@ app.all("/", (req, res) => {
   res.sendFile(indexPath);
 });
 
-app.get("/api/hello", (req, res) => {
+app.get("/api/greeting", (req, res) => {
   const name = req.query.name || "World";
   res.json({ greeting: `Hello ${name}!` });
+});
+
+app.post("/api/greeting", (req, res) => {
+  const name = req.query.name || "World";
+  res.json({ greeting: `Hello ${name}! POST` });
 });
 
 app.listen(3001, () =>

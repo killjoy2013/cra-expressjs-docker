@@ -14,8 +14,12 @@ app.use("/static", express_1.default.static(staticPath));
 app.all("/", (req, res) => {
     res.sendFile(indexPath);
 });
-app.get("/api/hello", (req, res) => {
+app.get("/api/greeting", (req, res) => {
     const name = req.query.name || "World";
     res.json({ greeting: `Hello ${name}!` });
+});
+app.post("/api/greeting", (req, res) => {
+    const name = req.query.name || "World";
+    res.json({ greeting: `Hello ${name}! POST` });
 });
 app.listen(3001, () => console.log("Express server is running on localhost:3001"));
