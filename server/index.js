@@ -17,7 +17,7 @@ app.all("/", (req, res) => {
 app.post("/api/greeting", (req, res) => {
     const name = req.query.name || "World";
     res.json({
-        greeting: `Hello ${name}! Expressjs on ${new Date().toLocaleString()}`,
+        greeting: `Hello ${name}! From Expressjs on ${new Date().toLocaleString()}`,
     });
 });
 app.listen(3001, () => console.log("Express server is running on localhost:3001"));
