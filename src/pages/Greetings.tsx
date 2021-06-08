@@ -29,7 +29,7 @@ const Greetings = () => {
     setName(event.target.value);
   };
   const handleHello = (event: any) => {
-    fetch(`/api/greeting?name=${encodeURIComponent(name)}`, {
+    fetch(`/api/hello?name=${encodeURIComponent(name)}`, {
       method: "POST",
     })
       .then((response) => {
