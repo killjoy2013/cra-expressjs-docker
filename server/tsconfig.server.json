@@ -1,27 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": ".",
-    "module": "ES6",
+    "outDir": "build",
     "target": "esnext",
-    "lib": ["es6"],
-    "allowJs": true,
-    "moduleResolution": "node",
-    "rootDirs": ["app"],
-    "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "module": "CommonJS",
     "strict": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    "noFallthroughCasesInSwitch": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": [],
-  "include": ["app"]
+  "include": ["src"]
 }
