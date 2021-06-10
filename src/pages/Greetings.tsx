@@ -24,6 +24,7 @@ const Greetings = () => {
   const classes = useStyles({});
   const [name, setName] = useState("");
   const [helloMessage, setHelloMessage] = useState("");
+  const [goodbyeMessage, setGoodbyeMessage] = useState("");
 
   const handleChange = (event: any) => {
     setName(event.target.value);
@@ -37,6 +38,20 @@ const Greetings = () => {
       })
       .then((message) => {
         setHelloMessage(message.greeting);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const handleGoodbye = (event: any) => {
+    fetch(`/api/greetings/goodbye?name=${encodeURIComponent(name)}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((message) => {
+        setGoodbyeMessage(message.greeting);
       })
       .catch((error) => {
         console.error(error);
@@ -63,6 +78,12 @@ const Greetings = () => {
           Say Hello
         </Button>
         <Typography className={classes.message}>{helloMessage}</Typography>
+      </Grid>
+      <Grid item container direction="row" alignItems="center">
+        <Button variant="contained" color="primary" onClick={handleGoodbye}>
+          Say Goodbye
+        </Button>
+        <Typography className={classes.message}>{goodbyeMessage}</Typography>
       </Grid>
     </Grid>
   );
