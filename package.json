@@ -23,9 +23,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server:dev": "nodemon --exec ts-node --project server/tsconfig.server.json server/src/index.ts",
-    "server:build": "tsc --project server/tsconfig.server.json",
-    "server:run-build": "node server/build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
