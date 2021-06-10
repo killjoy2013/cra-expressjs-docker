@@ -16,7 +16,7 @@ app.all("/", (req, res) => {
 app.post("/api/hello", (req, res) => {
   const name = req.query.name || "World";
   res.json({
-    greeting: `Hello ${name}! From2 Expressjs on ${new Date().toLocaleString()}`,
+    greeting: `Hello ${name}! From Expressjs on ${new Date().toLocaleString()}`,
   });
 });
 
