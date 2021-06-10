@@ -22,7 +22,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Greetings = () => {
   const classes = useStyles({});
+  const [name, setName] = useState("");
+  const [helloMessage, setHelloMessage] = useState("");
 
+  const handleChange = (event: any) => {
+    setName(event.target.value);
+  };
+  const handleHello = (event: any) => {
+    fetch(`/api/greetings/hello?name=${encodeURIComponent(name)}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((message) => {
+        setHelloMessage(message.greeting);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <Grid
       className={classes.grid}
@@ -32,12 +51,18 @@ const Greetings = () => {
       spacing={8}
     >
       <Grid item>
-        <TextField variant="outlined" size="small" label="Name"></TextField>
+        <TextField
+          variant="outlined"
+          size="small"
+          label="Name"
+          onChange={handleChange}
+        ></TextField>
       </Grid>
       <Grid item container direction="row" alignItems="center">
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleHello}>
           Say Hello
         </Button>
+        <Typography className={classes.message}>{helloMessage}</Typography>
       </Grid>
     </Grid>
   );
