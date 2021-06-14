@@ -9,9 +9,7 @@ RUN npm run build && \
     npm run server:build && \
     mv /app/server/dist/src /app/build/server 
 
-EXPOSE 3002
+EXPOSE 3001
 ENV NODE_ENV=production
-
-RUN pwd && ls /app/build/server -la
 
 CMD [ "node","/app/build/server" ]
