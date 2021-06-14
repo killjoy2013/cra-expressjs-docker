@@ -24,7 +24,6 @@
   "scripts": {
     "server:dev": "nodemon --exec ts-node --project server/tsconfig.server.json server/src/index.ts",
     "server:build": "tsc --project server/tsconfig.server.json",
-    "server:run-build": "node server/build",
     "start": "react-scripts start",
     "both": "run-p server:dev start",
     "build": "react-scripts build",
