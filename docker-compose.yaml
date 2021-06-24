@@ -7,4 +7,4 @@ services:
     ports:
       - "3001:3001"
     environment:
-      TOOLBAR_COLOR: "yellow"
+      TOOLBAR_COLOR: "green"

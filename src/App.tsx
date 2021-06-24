@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 20,
       color: "white",
     },
+    appBar: {
+      backgroundColor: window["REACT_APP_TOOLBAR_COLOR"],
+    },
   })
 );
 
@@ -22,7 +25,7 @@ const App = () => {
   const classes = useStyles({});
   return (
     <BrowserRouter>
-      <AppBar position="static">
+      <AppBar position="static"  className={classes.appBar}>
         <Toolbar>
           <Link className={classes.href} to="/">
             Home
