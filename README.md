@@ -4,43 +4,36 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
-
-### `yarn start`
-
+### `npm start`
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+### `npm run server:dev`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs Expressjs on port 3001
 
-### `yarn build`
+### `npm run both`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Instead of starting webpack dev server and Expressjs one by one, this script starts both at the same time. Again on 3000 and 3001 ports.
+You'll still have HMR for CRA and nodemon watch for Espressjs
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `docker-compose up -d`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Builds the project to create its Docker image and run on 3001. 
+Open [http://localhost:3001](http://localhost:3001) to test the finished app.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Main Goals
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Adding an Expressjs server side to a bare metal CRA app without ejecting or changing its base structure. Just decorating it with a server side. So, the CRA any time in the future.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* Since CRA is kept as it is, development time is also kept unchanged. i.e., we still use webpack dev server and still have HMR. We can add any server side logic and create docker image as a whole app.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* We've encupsulated all the complexity in Docker build phase, in Dockerfile. So, development can be done without any extra issues. This makes sense from a developer's perspective to me. 
 
-## Learn More
+* We have a ready-to-deploy docker image of our app to any Kubernetes cluster. 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* We can use environment variables in our CRA even though we did not use any server templating.
