@@ -86,6 +86,10 @@ const io = new Server(server, {
 });
 
 io.on("connection", async (socket: Socket) => {
+  socket.on("ping_from_client", async () => {
+    socket.emit("pong_from_server");
+  });
+
   let eventDate = new Date();
   console.log(
     `CONNECTION..., socket.id:${socket.id} transport:${
@@ -98,6 +102,15 @@ io.on("connect", async (socket: Socket) => {
   let eventDate = new Date();
   console.log(
     `CONNECT..., socket.id:${socket.id} transport:${
+      socket.handshake.query?.transport
+    }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+  );
+});
+
+io.on("disconnect", async (socket: Socket) => {
+  let eventDate = new Date();
+  console.log(
+    `DISCONNECT..., socket.id:${socket.id} transport:${
       socket.handshake.query?.transport
     }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
   );

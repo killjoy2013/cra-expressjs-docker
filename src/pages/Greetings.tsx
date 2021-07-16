@@ -7,7 +7,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import { useState } from "react";
+import { AppContext } from "contexts/AppContext";
+import { useState, useContext } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,9 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Greetings = () => {
   const classes = useStyles({});
+  const appContext = useContext(AppContext);
   const [name, setName] = useState("");
   const [helloMessage, setHelloMessage] = useState("");
   const [goodbyeMessage, setGoodbyeMessage] = useState("");
+
+  const { refSocket } = appContext;
 
   const handleChange = (event: any) => {
     setName(event.target.value);
@@ -57,6 +61,11 @@ const Greetings = () => {
         console.error(error);
       });
   };
+
+  const handleSocketHi = (event: any) => {
+    refSocket.current.emit("ping_from_client");
+  };
+
   return (
     <Grid
       className={classes.grid}
@@ -84,6 +93,11 @@ const Greetings = () => {
           Say Goodbye
         </Button>
         <Typography className={classes.message}>{goodbyeMessage}</Typography>
+      </Grid>
+      <Grid item container direction="row" alignItems="center">
+        <Button variant="contained" color="primary" onClick={handleSocketHi}>
+          Ping server
+        </Button>
       </Grid>
     </Grid>
   );
