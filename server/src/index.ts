@@ -86,8 +86,30 @@ const io = new Server(server, {
 });
 
 io.on("connection", async (socket: Socket) => {
+  socket.on("ping", (cb) => {
+    if (typeof cb === "function") cb();
+  });
+
   socket.on("ping_from_client", async () => {
     socket.emit("pong_from_server");
+  });
+
+  socket.on("disconnect", async () => {
+    let eventDate = new Date();
+    console.log(
+      `SOCKET DISCONNECT..., socket.id:${socket.id} transport:${
+        socket.handshake.query?.transport
+      }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+    );
+  });
+
+  socket.on("reconnect", async () => {
+    let eventDate = new Date();
+    console.log(
+      `SOCKET RECONNECT..., socket.id:${socket.id} transport:${
+        socket.handshake.query?.transport
+      }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+    );
   });
 
   let eventDate = new Date();
@@ -102,15 +124,6 @@ io.on("connect", async (socket: Socket) => {
   let eventDate = new Date();
   console.log(
     `CONNECT..., socket.id:${socket.id} transport:${
-      socket.handshake.query?.transport
-    }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
-  );
-});
-
-io.on("disconnect", async (socket: Socket) => {
-  let eventDate = new Date();
-  console.log(
-    `DISCONNECT..., socket.id:${socket.id} transport:${
       socket.handshake.query?.transport
     }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
   );

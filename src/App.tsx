@@ -45,6 +45,16 @@ const App = () => {
           socket.id
         }, timeout:${socket.io.timeout()} on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
       );
+
+      setInterval(() => {
+        const start = Date.now();
+
+        // volatile, so the packet will be discarded if the socket is not connected
+        socket.volatile.emit("ping", () => {
+          const latency = Date.now() - start;
+          //console.log("latency", latency);
+        });
+      }, 10000);
     });
 
     socket.on("reconnect", () => {
