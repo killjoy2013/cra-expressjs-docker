@@ -17,7 +17,7 @@
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "server:dev": "nodemon --exec ts-node --project tsconfig.json src/index.ts",
+    "server:dev": "set DEBUG=socket.io.*&&nodemon --exec ts-node --project tsconfig.json src/index.ts",
     "server:build": "tsc --project tsconfig.json",
     "server:run-build": "node ../build/server"
   }

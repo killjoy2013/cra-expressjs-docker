@@ -1,1 +1,3 @@
-window.REACT_APP_TOOLBAR_COLOR='red';
+window.REACT_APP_TOOLBAR_COLOR = "red";
+window.REACT_APP_CLIENT_ENVIRONMENT = "development";
+window.REACT_APP_SOCKET_TIMEOUT = 10000;
