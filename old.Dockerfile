@@ -1,4 +1,4 @@
-FROM node:slim as node-builder
+FROM artifactory.turkcell.com.tr/local-docker-3rd-party/com/turkcell/noderunner/node:slim as node-builder
 
 WORKDIR /app
 COPY package.json /app/package.json
@@ -20,7 +20,10 @@ RUN npm run build && \
     npm run server:build && \
     mv /app/server/dist/src /app/build/server && \
     mv /app/docker-entrypoint.sh /app/build/docker-entrypoint.sh && \
-    mv /app/generate_config_js.sh /app/build/generate_config_js.sh
+    mv /app/generate_config_js.sh /app/build/generate_config_js.sh && \
+    chmod -R 777 /app/build
+    
+USER poc    
 
 EXPOSE 3001
 ENV NODE_ENV=production

@@ -1,0 +1,52 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: socket-poc
+  namespace: noderunner-dev
+  labels:
+    app: socket-poc
+spec:
+  strategy:
+    type: Recreate
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+  replicas: 0
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: socket-poc
+    deploymentconfig: socket-poc
+  template:
+    metadata:
+      labels:
+        app: socket-poc
+        deploymentconfig: socket-poc
+    spec:
+      containers:
+        - name: socket-poc
+          image: >-
+            artifactory.turkcell.com.tr/local-docker-dist-dev/com/turkcell/noderunner/socket/poc:001
+          env:
+            - name: TOOLBAR_COLOR
+              value: "green"
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1000Mi
+            requests:
+              cpu: 50m
+              memory: 500Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: noderunner-artifactory
+      schedulerName: default-scheduler

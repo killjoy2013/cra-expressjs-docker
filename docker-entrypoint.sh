@@ -1,5 +1,5 @@
 #!/bin/sh -eu
- echo "starting docker entrypoint" >&1
-/app/build/generate_config_js.sh >/app/build/env-config.js
-node /app/build/server
+echo "starting docker entrypoint" >&1
+/tmp/build/generate_config_js.sh >/tmp/build/env-config.js
+PORT=8081 node /tmp/build/server
 echo "express started" >&1

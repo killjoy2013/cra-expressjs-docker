@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: socket-poc
+  namespace: noderunner-dev
+spec:
+  host: dev-web.noderunner.turkcell.com.tr
+  to:
+    kind: Service
+    name: socket-poc
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: passthrough
+  wildcardPolicy: None
