@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socket-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socket-poc
+  template:
+    metadata:
+      labels:
+        app: socket-poc
+    spec:
+      containers:
+        - name: socket-poc
+          image: muratacr71.azurecr.io/socket:8081
+          env:
+            - name: TOOLBAR_COLOR
+              value: "green"
+            - name: NODE_ENV
+              value: "Dev"
+            - name: CLIENT_ROOT
+              value: "/"
+            - name: SOCKET_PING_TIMEOUT
+              value: "20000"
+            - name: SOCKET_PING_INTERVAL
+              value: "20000"
+            - name: SOCKET_TIMEOUT
+              value: "40000"
+            - name: CLIENT_ENVIRONMENT
+              value: "Dev"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
+          ports:
+            - containerPort: 8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: socket-poc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8081
+  selector:
+    app: socket-poc

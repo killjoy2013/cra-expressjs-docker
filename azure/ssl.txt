@@ -1,0 +1,24 @@
+https://www.youtube.com/watch?v=wzbf9ldvBjM&list=WL&index=1 
+
+1 - Generate key pair
+openssl genrsa -out mysocket.key 2048
+
+2 - Extract public key
+openssl rsa -in mysocket.key -pubout -out mysocket_public .key
+
+3 - create certificate signing request (csr)
+openssl req -new -key mysocket.key -out mysocket.csr
+ 
+   FQDN = *.just-poc.info
+   no password
+
+4 - verification
+openssl req -text -in mysocket.csr -noout -verify
+
+    you should see your info
+
+5 - self sign certificate
+openssl x509 -in mysocket.csr -out mysocket.crt -req -signkey mysocket.key -days 365
+
+
+use this crt in out /server/certs/cert.crt

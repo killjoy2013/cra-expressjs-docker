@@ -1,10 +1,18 @@
 version: "3.4"
 services:
   client:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    restart: always
+    image: craexpressjsdocker:docker-compose-80
+    container_name: mysocket-demo
     ports:
-      - "3001:3001"
+      - "80:80"
     environment:
       TOOLBAR_COLOR: "green"
+      NODE_ENV: "development"
+      # DEBUG: "socket.io.*"
+      CLIENT_ROOT: "/"
+      SOCKET_PING_TIMEOUT: 5000
+      SOCKET_PING_INTERVAL: 10000

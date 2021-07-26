@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const App = () => {
   const classes = useStyles({});
   const appContext = useContext(AppContext);
-  const { refSocket } = appContext;
+  const { refSocket, refSocketInterval, refPingCount } = appContext;
 
   useEffect(() => {
     refSocket.current = io({
@@ -36,6 +36,10 @@ const App = () => {
           ? "http:localhost:3009"
           : "/",
       timeout: window["REACT_APP_SOCKET_TIMEOUT"],
+      transports:
+        window["REACT_APP_CLIENT_ENVIRONMENT"] === "development"
+          ? ["polling"]
+          : ["websocket"],
     });
     let socket = refSocket.current;
     socket.on("connect", () => {
@@ -43,18 +47,30 @@ const App = () => {
       console.log(
         `connect....socketId:${
           socket.id
-        }, timeout:${socket.io.timeout()} on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+        }, timeout:${socket.io.timeout()} transport:${
+          socket.io.engine.transport.name
+        } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
       );
 
-      setInterval(() => {
-        const start = Date.now();
+      refSocketInterval.current = setInterval(() => {
+        const start = new Date();
 
         // volatile, so the packet will be discarded if the socket is not connected
         socket.volatile.emit("ping", () => {
-          const latency = Date.now() - start;
+          let eventDate = new Date();
+          refPingCount.current++;
+          const latency = eventDate.getTime() - start.getTime();
+
+          sessionStorage.setItem(
+            "ping_status",
+            `count:${
+              refPingCount.current
+            }, latency:${latency}, on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+          );
+
           //console.log("latency", latency);
         });
-      }, 10000);
+      }, 5000);
     });
 
     socket.on("reconnect", () => {
@@ -70,26 +86,28 @@ const App = () => {
       let eventDate = new Date();
       console.log(
         `socket disconnecting, id:${socket.id}, transport:${
-          socket.io?.engine?.transport?.query?.transport
+          socket.io.engine.transport.name
         } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
       );
     });
 
-    socket.on("connect_error", () => {
+    socket.on("connect_error", (error) => {
       let eventDate = new Date();
       console.log(
         `socket connect_error, id:${socket.id}, transport:${
-          socket.io?.engine?.transport?.query?.transport
-        } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+          socket.io.engine.transport.name
+        } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`,
+        error
       );
     });
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", (reason) => {
+      clearInterval(refSocketInterval.current);
       let eventDate = new Date();
       console.log(
         `socket disconnect, id:${socket.id}, transport:${
-          socket.io?.engine?.transport?.query?.transport
-        } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+          socket.io.engine.transport.name
+        } on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()} reason:${reason}`
       );
     });
     socket.on("pong_from_server", () => {

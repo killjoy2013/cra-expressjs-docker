@@ -25,7 +25,7 @@ WORKDIR /tmp
 RUN chmod +rwx /tmp/generate_config_js.sh && \              
     chmod +rwx /tmp/docker-entrypoint.sh && \              
     chmod +rwx /tmp/server/certs/cert.key && \
-    chmod +rwx /tmp/server/certs/cert.pem && \
+    chmod +rwx /tmp/server/certs/cert.crt && \
     dos2unix /tmp/generate_config_js.sh && \                            
     dos2unix /tmp/docker-entrypoint.sh   
 
@@ -39,7 +39,7 @@ RUN mv /tmp/server/dist/src /tmp/build/server && \
 ENV PATH /tmp/build/bff/node_modules/.bin:$PATH   
 
 EXPOSE 8081
-USER expressjs         
+#USER expressjs         
 ENTRYPOINT ["/tmp/build/docker-entrypoint.sh"]
 
 

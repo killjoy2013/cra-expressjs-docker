@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 3009;
 const certsPath = path.resolve(__dirname, "../certs");
 const options = {
   key: fs.readFileSync(path.resolve(certsPath, "cert.key")),
-  cert: fs.readFileSync(path.resolve(certsPath, "cert.pem")),
+  cert: fs.readFileSync(path.resolve(certsPath, "cert.crt")),
   requestCert: true,
   rejectUnauthorized: false,
 };
@@ -78,6 +78,8 @@ if (process.env.NODE_ENV == "development") {
 const io = new Server(server, {
   pingTimeout: Number(process.env.SOCKET_PING_TIMEOUT),
   pingInterval: Number(process.env.SOCKET_PING_INTERVAL),
+  transports:
+    process.env.NODE_ENV == "development" ? ["polling"] : ["websocket"],
   cors: {
     origin: process.env.CLIENT_ROOT,
     methods: ["GET", "POST"],
@@ -94,12 +96,12 @@ io.on("connection", async (socket: Socket) => {
     socket.emit("pong_from_server");
   });
 
-  socket.on("disconnect", async () => {
+  socket.on("disconnect", async (reason) => {
     let eventDate = new Date();
     console.log(
       `SOCKET DISCONNECT..., socket.id:${socket.id} transport:${
-        socket.handshake.query?.transport
-      }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
+        socket.conn.transport.name
+      } reason:${reason} on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
     );
   });
 
@@ -107,7 +109,7 @@ io.on("connection", async (socket: Socket) => {
     let eventDate = new Date();
     console.log(
       `SOCKET RECONNECT..., socket.id:${socket.id} transport:${
-        socket.handshake.query?.transport
+        socket.conn.transport.name
       }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
     );
   });
@@ -115,7 +117,7 @@ io.on("connection", async (socket: Socket) => {
   let eventDate = new Date();
   console.log(
     `CONNECTION..., socket.id:${socket.id} transport:${
-      socket.handshake.query?.transport
+      socket.conn.transport.name
     }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
   );
 });
@@ -124,7 +126,7 @@ io.on("connect", async (socket: Socket) => {
   let eventDate = new Date();
   console.log(
     `CONNECT..., socket.id:${socket.id} transport:${
-      socket.handshake.query?.transport
+      socket.conn.transport.name
     }  on ${eventDate.toLocaleDateString()} ${eventDate.toLocaleTimeString()}`
   );
 });
