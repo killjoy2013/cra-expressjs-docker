@@ -14,10 +14,11 @@ export type Scalars = {
   Float: number;
 };
 
-export type Visitor = {
-  __typename?: 'visitor';
-  title?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
+export type DemoVisitor = {
+  __typename?: 'DemoVisitor';
+  name: Scalars['String'];
+  id: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
 };
 
 
@@ -103,7 +104,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  visitor: ResolverTypeWrapper<Visitor>;
+  DemoVisitor: ResolverTypeWrapper<DemoVisitor>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -111,20 +112,21 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  visitor: Visitor;
+  DemoVisitor: DemoVisitor;
   String: Scalars['String'];
   Int: Scalars['Int'];
   Boolean: Scalars['Boolean'];
 };
 
-export type VisitorResolvers<ContextType = any, ParentType extends ResolversParentTypes['visitor'] = ResolversParentTypes['visitor']> = {
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+export type DemoVisitorResolvers<ContextType = any, ParentType extends ResolversParentTypes['DemoVisitor'] = ResolversParentTypes['DemoVisitor']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
-  visitor?: VisitorResolvers<ContextType>;
+  DemoVisitor?: DemoVisitorResolvers<ContextType>;
 };
 
 

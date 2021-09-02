@@ -3,6 +3,8 @@ import path from "path";
 import greetings from "./routes/Greetings";
 
 const app = express();
+app.use(express.json());
+
 const staticPath = path.resolve(__dirname, "../static");
 const buildPath = path.resolve(__dirname, "..");
 const indexPath = path.resolve(__dirname, "../index.html");

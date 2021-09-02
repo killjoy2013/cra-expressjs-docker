@@ -8,6 +8,10 @@ import {
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { useState } from "react";
+import axios from "axios";
+import { Visitor } from "graphql";
+import { DemoVisitor } from "../graphql/types";
+import ReactJson from "react-json-view";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,39 +27,47 @@ const useStyles = makeStyles((theme: Theme) =>
 const Greetings = () => {
   const classes = useStyles({});
   const [name, setName] = useState("");
-  const [helloMessage, setHelloMessage] = useState("");
-  const [goodbyeMessage, setGoodbyeMessage] = useState("");
+  const [helloMessage, setHelloMessage] = useState<DemoVisitor>({
+    name: "",
+    id: 0,
+    message: "",
+  });
+  const [goodbyeMessage, setGoodbyeMessage] = useState<DemoVisitor>({
+    name: "",
+    id: 0,
+    message: "",
+  });
 
   const handleChange = (event: any) => {
     setName(event.target.value);
   };
-  const handleHello = (event: any) => {
-    fetch(`/api/greetings/hello?name=${encodeURIComponent(name)}`, {
-      method: "POST",
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((message) => {
-        setHelloMessage(message.greeting);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleHello = async (event: any) => {
+    const { data } = await axios.post<DemoVisitor>(
+      `/api/greetings/hello`,
+      {
+        name,
+        id: 3,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    setHelloMessage(data);
   };
-  const handleGoodbye = (event: any) => {
-    fetch(`/api/greetings/goodbye?name=${encodeURIComponent(name)}`, {
-      method: "POST",
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((message) => {
-        setGoodbyeMessage(message.greeting);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleGoodbye = async (event: any) => {
+    const { data } = await axios.post<DemoVisitor>(
+      `/api/greetings/goodbye`,
+      {
+        name,
+        id: 5,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    setGoodbyeMessage(data);
   };
   return (
     <Grid
@@ -77,13 +89,21 @@ const Greetings = () => {
         <Button variant="contained" color="primary" onClick={handleHello}>
           Say Hello
         </Button>
-        <Typography className={classes.message}>{helloMessage}</Typography>
+        <ReactJson
+          src={helloMessage}
+          displayDataTypes={false}
+          shouldCollapse={false}
+        ></ReactJson>
       </Grid>
       <Grid item container direction="row" alignItems="center">
         <Button variant="contained" color="primary" onClick={handleGoodbye}>
           Say Goodbye
         </Button>
-        <Typography className={classes.message}>{goodbyeMessage}</Typography>
+        <ReactJson
+          src={goodbyeMessage}
+          displayDataTypes={false}
+          shouldCollapse={false}
+        ></ReactJson>
       </Grid>
     </Grid>
   );

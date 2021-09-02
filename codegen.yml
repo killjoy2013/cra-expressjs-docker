@@ -1,3 +1,4 @@
+# schema: https://countries.trevorblades.com/
 overwrite: true
 generates:
   ./src/graphql/types.tsx:

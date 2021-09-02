@@ -1,4 +1,5 @@
-type visitor {
-  title: String
-  id: Int
+type DemoVisitor {
+  name: String!
+  id: Int!
+  message: String
 }

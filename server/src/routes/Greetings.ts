@@ -1,26 +1,32 @@
 import express from "express";
-import { Visitor } from "../../../src/graphql/types";
+import { DemoVisitor } from "../../../src/graphql/types";
+
 const router = express.Router();
 
 router.post("/hello", (req, res) => {
-  const name = req.query.name || "World";
-  res.json({
-    greeting: `Hello ${name} :-) From Expressjs on ${new Date().toLocaleString()}`,
-  });
-});
+  const name = (req.body.name || "World") as string;
+  const id = Number(req.body.id || 0);
 
-router.post("/goodbye", (req, res) => {
-  const name = req.query.name || "World3";
-
-  const myVisitor: Visitor = {
-    id: 12,
-    title: "Murat",
+  const myVisitor: DemoVisitor = {
+    id,
+    name,
+    message: `Hello ${name} :-( From Expressjs on ${new Date().toLocaleString()}`,
   };
 
   res.json(myVisitor);
-  // res.json({
-  //   greeting: `Goodbye ${name} :-( From Expressjs on ${new Date().toLocaleString()}`,
-  // });
+});
+
+router.post("/goodbye", (req, res) => {
+  const name = (req.body.name || "World") as string;
+  const id = Number(req.body.id || 0);
+
+  const myVisitor: DemoVisitor = {
+    id,
+    name,
+    message: `Goodbye ${name} :-( From Expressjs on ${new Date().toLocaleString()}`,
+  };
+
+  res.json(myVisitor);
 });
 
 export default router;
