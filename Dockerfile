@@ -13,13 +13,13 @@ RUN npm install && \
 FROM node:slim as second_layer
 
 WORKDIR /app
-COPY --from=client_build /app/build /app/build
-COPY --from=client_build /app/public /app/public
-COPY --from=client_build /app/server/dist/server/src /app/build/server
-COPY --from=client_build /app/server/node_modules /app/build/server/node_modules
+COPY --from=first_layer /app/build /app/build
+COPY --from=first_layer /app/public /app/public
+COPY --from=first_layer /app/server/dist/server/src /app/build/server
+COPY --from=first_layer /app/server/node_modules /app/build/server/node_modules
 
-COPY --from=client_build /app/docker-entrypoint.sh /app/build/docker-entrypoint.sh
-COPY --from=client_build /app/generate_config_js.sh /app/build/generate_config_js.sh
+COPY --from=first_layer /app/docker-entrypoint.sh /app/build/docker-entrypoint.sh
+COPY --from=first_layer /app/generate_config_js.sh /app/build/generate_config_js.sh
 
 RUN apt-get update && \
     apt-get install dos2unix && \
