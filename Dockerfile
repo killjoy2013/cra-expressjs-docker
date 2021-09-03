@@ -1,4 +1,4 @@
-FROM node:slim as client_build
+FROM node:slim as first_layer
 
 WORKDIR /app
 COPY . /app
@@ -10,7 +10,7 @@ WORKDIR /app/server
 RUN npm install && \
     npm run server:build
 
-FROM node:slim as server_build
+FROM node:slim as second_layer
 
 WORKDIR /app
 COPY --from=client_build /app/build /app/build
