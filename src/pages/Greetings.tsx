@@ -4,14 +4,12 @@ import {
   Grid,
   makeStyles,
   Theme,
-  Typography,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import { useState } from "react";
 import axios from "axios";
-import { Visitor } from "graphql";
-import { DemoVisitor } from "../graphql/types";
+import { useState } from "react";
 import ReactJson from "react-json-view";
+import { DemoVisitor } from "../graphql/types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

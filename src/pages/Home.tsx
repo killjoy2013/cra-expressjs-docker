@@ -18,7 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
 const Home = () => {
   const classes = useStyles({});
   return (
-    <Grid className={classes.grid} container direction="row" justify="center">
+    <Grid
+      className={classes.grid}
+      container
+      direction="row"
+      justifyContent="center"
+    >
       <Typography color="textSecondary" variant="h2">
         Welcome to Fancy Greetings App!
       </Typography>
