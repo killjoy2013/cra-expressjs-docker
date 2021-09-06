@@ -21,10 +21,6 @@ COPY --from=client_build /app/server/node_modules /app/build/server/node_modules
 COPY --from=client_build /app/docker-entrypoint.sh /app/build/docker-entrypoint.sh
 COPY --from=client_build /app/generate_config_js.sh /app/build/generate_config_js.sh
 
-
-RUN ls -la /app/build/server/
-
-
 RUN apt-get update && \
     apt-get install dos2unix && \
     apt-get install -y jq && \
