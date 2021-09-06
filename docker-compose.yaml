@@ -2,7 +2,16 @@ version: "3.4"
 services:
   client:
     image: craexpressjsdocker:latest
+    container_name: cra
     ports:
       - "3001:3001"
     environment:
       TOOLBAR_COLOR: "purple"
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
